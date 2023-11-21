@@ -23,7 +23,6 @@ namespace HDIApi.Controllers
         [HttpPost("LoginEmployee")]
         public async Task<IActionResult> LoginEmployee([FromBody] LoginDTO infologin)
         {
-            JsonResult result = new JsonResult(new { });
             try
             {
                 Employee userInfo = await _usersProvider.LoginEmployee(infologin);

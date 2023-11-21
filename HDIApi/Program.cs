@@ -35,10 +35,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))
     };
 });
-/*builder.Services.AddDbContext<ErAseguradoraContext>(options =>
+builder.Services.AddDbContext<InsurancedbContext>(options =>
                 options.UseMySql(
                     stringConnection, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.25-mysql"
-                )));*/
+                )));
 builder.Services.AddScoped<IUsersProvider, UsersProvider>();
 var app = builder.Build();
 
