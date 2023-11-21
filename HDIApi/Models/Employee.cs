@@ -19,7 +19,5 @@ public partial class Employee
 
     public DateTime? RegistrationDate { get; set; }
 
-    public DateOnly? Employeecol { get; set; }
-
     public virtual ICollection<Accident> Accidents { get; } = new List<Accident>();
 }
