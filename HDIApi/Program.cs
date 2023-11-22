@@ -1,7 +1,6 @@
 using HDIApi.Bussines;
 using HDIApi.Bussines.Interface;
 using HDIApi.Models;
-using HDIApi.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;

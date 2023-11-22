@@ -23,39 +23,34 @@ namespace HDIApi.Controllers
         [HttpPost("LoginEmployee")]
         public async Task<IActionResult> LoginEmployee([FromBody] LoginDTO infologin)
         {
+            IActionResult result;
             try
             {
                 Employee userInfo = await _usersProvider.LoginEmployee(infologin);
-                if (userInfo == null)
+                if (userInfo == null || !userInfo.Password.Equals(infologin.Password))
                 {
-                    return BadRequest(new { message = "Usuario o Contraseña incorrecta." });
+                    result = BadRequest();
                 }
                 else
                 {
-                    Console.WriteLine("firstElse");
-                    if (userInfo.Password.Equals(infologin.Password))
-                    {
-                        Console.WriteLine("secondIf");
 
                         var token = new TokenDTO
                         {
-                            Token = "",
+                            token = "",
                             idUser = userInfo.IdEmployee,
-                            Role = userInfo.Rol,
-                            FullName = userInfo.NameEmployee + " " + userInfo.LastnameEmployee
+                            role = userInfo.Rol,
+                            fullName = userInfo.NameEmployee + " " + userInfo.LastnameEmployee
                         };
-                        return Ok(TokenGenerator.GetToken(token));
-                    }
-                    else
-                    {
-                        return BadRequest(new { message = "Usuario o Contraseña incorrecta." });
-                    }
+                    result = Ok(TokenGenerator.GetToken(token));
+
+
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(500, new { error = ex.Message });
+                result = StatusCode(500);
             }
+            return result;
         }
     }
 }

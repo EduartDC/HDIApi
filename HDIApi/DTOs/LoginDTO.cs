@@ -8,7 +8,6 @@ namespace HDIApi.DTOs
         
             [Required(ErrorMessage = "El usuario no puede estar vacío")]
             [StringLength(100, ErrorMessage = "El nombre no puede exceder las 100 posiciones")]
-            [DataType(DataType.EmailAddress)]
             [DisplayName("Nombre del Usuario")]
             public string User { get; set; }
 

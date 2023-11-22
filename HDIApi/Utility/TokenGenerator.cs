@@ -20,7 +20,7 @@ namespace HDIApi.Utility
             configuration = builder.Build();
         }
 
-        public static JsonResult GetToken(TokenDTO newToken)
+        public static TokenDTO GetToken(TokenDTO newToken)
         {
             if (configuration == null)
             {
@@ -33,7 +33,7 @@ namespace HDIApi.Utility
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim("id", newToken.idUser.ToString()),
-                new Claim("roleType", newToken.Role),
+                new Claim("roleType", newToken.role),
             };
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256);
@@ -43,12 +43,8 @@ namespace HDIApi.Utility
                 expires: DateTime.UtcNow.AddMinutes(60),
                 signingCredentials: creds
             );
-            newToken.Token = new JwtSecurityTokenHandler().WriteToken(token);
-            return new JsonResult(
-                new
-                {
-                    Token = newToken,
-                });
+            newToken.token = new JwtSecurityTokenHandler().WriteToken(token);
+            return newToken;
         }
     }
 }
