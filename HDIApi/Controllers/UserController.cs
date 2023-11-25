@@ -29,7 +29,7 @@ namespace HDIApi.Controllers
                 Employee userInfo = await _usersProvider.LoginEmployee(infologin);
                 if (userInfo == null || !userInfo.Password.Equals(infologin.Password))
                 {
-                    result = BadRequest();
+                    result = NotFound();
                 }
                 else
                 {

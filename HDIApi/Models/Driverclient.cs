@@ -17,8 +17,6 @@ public partial class Driverclient
 
     public string? Password { get; set; }
 
-    public DateTime? DriverBirthday { get; set; }
-
     public virtual ICollection<Accident> Accidents { get; } = new List<Accident>();
 
     public virtual ICollection<Insurancepolicy> Insurancepolicies { get; } = new List<Insurancepolicy>();

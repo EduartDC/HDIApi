@@ -19,9 +19,7 @@ public partial class Vehicleclient
 
     public string? Year { get; set; }
 
-    public string InsurancePolicyIdInsurancePolicy { get; set; } = null!;
-
     public virtual ICollection<Accident> Accidents { get; } = new List<Accident>();
 
-    public virtual Insurancepolicy InsurancePolicyIdInsurancePolicyNavigation { get; set; } = null!;
+    public virtual ICollection<Insurancepolicy> Insurancepolicies { get; } = new List<Insurancepolicy>();
 }

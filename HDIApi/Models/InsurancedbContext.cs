@@ -6,16 +6,13 @@ namespace HDIApi.Models;
 
 public partial class InsurancedbContext : DbContext
 {
-    IConfiguration config = null;
-    public InsurancedbContext(IConfiguration config)
+    public InsurancedbContext()
     {
-        this.config = config;
     }
 
-    public InsurancedbContext(DbContextOptions<InsurancedbContext> options, IConfiguration config)
+    public InsurancedbContext(DbContextOptions<InsurancedbContext> options)
         : base(options)
     {
-        this.config = config;
     }
 
     public virtual DbSet<Accident> Accidents { get; set; }
@@ -37,12 +34,8 @@ public partial class InsurancedbContext : DbContext
     public virtual DbSet<Vehicleclient> Vehicleclients { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var connectionString = config.GetConnectionString("mysql");
-
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        optionsBuilder.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.34-mysql"));
-    }
+        => optionsBuilder.UseMySql("server=hdi-bd.mysql.database.azure.com;database=insurancedb;user=AdminHDI;pwd=Azure123098", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.34-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -60,9 +53,9 @@ public partial class InsurancedbContext : DbContext
 
             entity.HasIndex(e => e.OpinionAdjusterIdOpinionAdjuster, "fk_Accident_OpinionAdjuster1_idx");
 
-            entity.HasIndex(e => e.DriverClientIdDriverClient, "fk_ReportAccident_DriverClient1_idx");
+            entity.HasIndex(e => e.VehicleClientIdVehicleClient, "fk_Accident_VehicleClient1_idx");
 
-            entity.HasIndex(e => e.VehicleClientIdVehicleClient, "fk_ReportAccident_VehicleClient1_idx");
+            entity.HasIndex(e => e.DriverClientIdDriverClient, "fk_ReportAccident_DriverClient1_idx");
 
             entity.Property(e => e.IdAccident)
                 .HasMaxLength(100)
@@ -71,14 +64,20 @@ public partial class InsurancedbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("accidentDate");
             entity.Property(e => e.DriverClientIdDriverClient)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .HasColumnName("DriverClient_idDriverClient");
             entity.Property(e => e.EmployeeIdEmployee)
                 .HasMaxLength(100)
                 .HasColumnName("Employee_idEmployee");
+            entity.Property(e => e.Latitude)
+                .HasMaxLength(100)
+                .HasColumnName("latitude");
             entity.Property(e => e.Location)
-                .HasMaxLength(45)
+                .HasMaxLength(100)
                 .HasColumnName("location");
+            entity.Property(e => e.Longitude)
+                .HasMaxLength(100)
+                .HasColumnName("longitude");
             entity.Property(e => e.NameLocation)
                 .HasMaxLength(150)
                 .HasColumnName("nameLocation");
@@ -89,7 +88,7 @@ public partial class InsurancedbContext : DbContext
                 .HasMaxLength(45)
                 .HasColumnName("reportStatus");
             entity.Property(e => e.VehicleClientIdVehicleClient)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .HasColumnName("VehicleClient_idVehicleClient");
 
             entity.HasOne(d => d.DriverClientIdDriverClientNavigation).WithMany(p => p.Accidents)
@@ -99,18 +98,16 @@ public partial class InsurancedbContext : DbContext
 
             entity.HasOne(d => d.EmployeeIdEmployeeNavigation).WithMany(p => p.Accidents)
                 .HasForeignKey(d => d.EmployeeIdEmployee)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Accident_Employee1");
 
             entity.HasOne(d => d.OpinionAdjusterIdOpinionAdjusterNavigation).WithMany(p => p.Accidents)
                 .HasForeignKey(d => d.OpinionAdjusterIdOpinionAdjuster)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Accident_OpinionAdjuster1");
 
             entity.HasOne(d => d.VehicleClientIdVehicleClientNavigation).WithMany(p => p.Accidents)
                 .HasForeignKey(d => d.VehicleClientIdVehicleClient)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ReportAccident_VehicleClient1");
+                .HasConstraintName("fk_Accident_VehicleClient1");
         });
 
         modelBuilder.Entity<Carinvolved>(entity =>
@@ -145,9 +142,6 @@ public partial class InsurancedbContext : DbContext
             entity.Property(e => e.IdDriverClient)
                 .HasMaxLength(100)
                 .HasColumnName("idDriverClient");
-            entity.Property(e => e.DriverBirthday)
-                .HasColumnType("datetime")
-                .HasColumnName("driverBirthday");
             entity.Property(e => e.LastNameDriver)
                 .HasMaxLength(100)
                 .HasColumnName("lastNameDriver");
@@ -226,8 +220,10 @@ public partial class InsurancedbContext : DbContext
 
             entity.HasIndex(e => e.DriverClientIdDriverClient, "fk_InsurancePolicy_DriverClient1_idx");
 
+            entity.HasIndex(e => e.VehicleClientIdVehicleClient, "fk_InsurancePolicy_VehicleClient1_idx");
+
             entity.Property(e => e.IdInsurancePolicy)
-                .HasMaxLength(20)
+                .HasMaxLength(100)
                 .HasColumnName("idInsurancePolicy");
             entity.Property(e => e.DriverClientIdDriverClient)
                 .HasMaxLength(100)
@@ -243,11 +239,19 @@ public partial class InsurancedbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("startTerm");
             entity.Property(e => e.TermAmount).HasColumnName("termAmount");
+            entity.Property(e => e.VehicleClientIdVehicleClient)
+                .HasMaxLength(100)
+                .HasColumnName("VehicleClient_idVehicleClient");
 
             entity.HasOne(d => d.DriverClientIdDriverClientNavigation).WithMany(p => p.Insurancepolicies)
                 .HasForeignKey(d => d.DriverClientIdDriverClient)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_InsurancePolicy_DriverClient1");
+
+            entity.HasOne(d => d.VehicleClientIdVehicleClientNavigation).WithMany(p => p.Insurancepolicies)
+                .HasForeignKey(d => d.VehicleClientIdVehicleClient)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_InsurancePolicy_VehicleClient1");
         });
 
         modelBuilder.Entity<Involved>(entity =>
@@ -272,6 +276,9 @@ public partial class InsurancedbContext : DbContext
             entity.Property(e => e.LastNameInvolved)
                 .HasMaxLength(100)
                 .HasColumnName("lastNameInvolved");
+            entity.Property(e => e.LicenseNumber)
+                .HasMaxLength(100)
+                .HasColumnName("licenseNumber");
             entity.Property(e => e.NameInvolved)
                 .HasMaxLength(100)
                 .HasColumnName("nameInvolved");
@@ -296,9 +303,11 @@ public partial class InsurancedbContext : DbContext
             entity.Property(e => e.IdOpinionAdjuster)
                 .HasMaxLength(100)
                 .HasColumnName("idOpinionAdjuster");
-            entity.Property(e => e.CreationDate).HasColumnName("creationDate");
+            entity.Property(e => e.CreationDate)
+                .HasColumnType("datetime")
+                .HasColumnName("creationDate");
             entity.Property(e => e.Description)
-                .HasMaxLength(200)
+                .HasMaxLength(300)
                 .HasColumnName("description");
         });
 
@@ -307,8 +316,6 @@ public partial class InsurancedbContext : DbContext
             entity.HasKey(e => e.IdVehicleClient).HasName("PRIMARY");
 
             entity.ToTable("vehicleclient");
-
-            entity.HasIndex(e => e.InsurancePolicyIdInsurancePolicy, "fk_VehicleClient_InsurancePolicy1_idx");
 
             entity.Property(e => e.IdVehicleClient)
                 .HasMaxLength(100)
@@ -319,9 +326,6 @@ public partial class InsurancedbContext : DbContext
             entity.Property(e => e.Color)
                 .HasMaxLength(45)
                 .HasColumnName("color");
-            entity.Property(e => e.InsurancePolicyIdInsurancePolicy)
-                .HasMaxLength(20)
-                .HasColumnName("InsurancePolicy_idInsurancePolicy");
             entity.Property(e => e.Model)
                 .HasMaxLength(45)
                 .HasColumnName("model");
@@ -334,11 +338,6 @@ public partial class InsurancedbContext : DbContext
             entity.Property(e => e.Year)
                 .HasMaxLength(4)
                 .HasColumnName("year");
-
-            entity.HasOne(d => d.InsurancePolicyIdInsurancePolicyNavigation).WithMany(p => p.Vehicleclients)
-                .HasForeignKey(d => d.InsurancePolicyIdInsurancePolicy)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_VehicleClient_InsurancePolicy1");
         });
 
         OnModelCreatingPartial(modelBuilder);

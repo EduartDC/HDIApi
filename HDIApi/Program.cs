@@ -39,6 +39,8 @@ builder.Services.AddDbContext<InsurancedbContext>(options =>
                     stringConnection, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.25-mysql"
                 )));
 builder.Services.AddScoped<IUsersProvider, UsersProvider>();
+builder.Services.AddScoped<IPolicyProvider, PolicyProvider>();
+builder.Services.AddScoped<IReportProvider, ReportProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -11,6 +11,8 @@ public partial class Involved
 
     public string? NameInvolved { get; set; }
 
+    public string? LicenseNumber { get; set; }
+
     public string AccidentIdAccident { get; set; } = null!;
 
     public string CarInvolvedIdCarInvolved { get; set; } = null!;
