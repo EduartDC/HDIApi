@@ -46,9 +46,9 @@ namespace HDIApi.Controllers
 
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                result = StatusCode(500);
+                result = StatusCode(500, ex.Message);
             }
             return result;
         }

@@ -15,6 +15,7 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .Build();
 var key = configuration["JWT:Key"];
+Console.WriteLine(key);
 var stringConnection = configuration.GetConnectionString("mysql");
 
 // Add services to the container.
@@ -31,8 +32,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            // Agrega registros para capturar información sobre fallas de autenticación.
+            Console.WriteLine(context.Exception);
+            return Task.CompletedTask;
+        }
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireClaim("roleType", "admin"));
+    options.AddPolicy("Ajustador", policy => policy.RequireClaim("roleType", "ajustador"));
+    options.AddPolicy("Conductor", policy => policy.RequireClaim("roleType", "conductor"));
 });
 builder.Services.AddDbContext<InsurancedbContext>(options =>
                 options.UseMySql(
@@ -54,7 +71,7 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -4,7 +4,7 @@ namespace HDIApi.Bussines.Interface
 {
     public interface IReportProvider
     {
-        Task<NewReportDTO> GetReportByDriver(string idDriver);
-        Task<NewReportDTO> CreateReport(NewReportDTO report);
+        public Task<NewReportDTO> GetReportByDriver(string idDriver);
+        public Task<NewReportDTO> CreateReport(NewReportDTO report);
     }
 }

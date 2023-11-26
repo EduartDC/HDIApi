@@ -4,11 +4,11 @@ namespace HDIApi.DTOs
 {
     public class NewOpinionadjusterDTO
     {
-        [Required]
+        [Required(ErrorMessage = "La fecha es necesaria")]
         public DateTime CreationDate { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Es necesaria la decision del ajustador")]
         public string Description { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Es necesario el id del reporte")]
         public string IdAccident { get; set; } = null!;
     }
 }

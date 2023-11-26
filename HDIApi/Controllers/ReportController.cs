@@ -1,11 +1,13 @@
 ﻿using HDIApi.Bussines.Interface;
 using HDIApi.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+   
     public class ReportController : ControllerBase
     {
         private readonly ILogger<ReportController> _logger;
@@ -33,9 +35,9 @@ namespace HDIApi.Controllers
                     result = Ok();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                result = StatusCode(500);
+                result = StatusCode(500, ex.Message);
             }
             return result;
         }

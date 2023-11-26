@@ -10,6 +10,8 @@ namespace HDIApi.DTOs
 
         public string? LastNameDriver { get; set; }
 
+        public string FullNameDriver { get; set; } = null!;
+
         public string? TelephoneNumber { get; set; }
 
         public string? LicenseNumber { get; set; }

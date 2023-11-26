@@ -5,7 +5,7 @@ namespace HDIApi.DTOs
 {
     public class NewReportDTO
     {
-
+        [Required]
         public string? Location { get; set; }
         [Required]
         public string Latitude { get; set; } = null!;

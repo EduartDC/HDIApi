@@ -1,10 +1,13 @@
 ﻿using HDIApi.Bussines.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HDIApi.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize]
     public class PolicyController : ControllerBase
     {
         private readonly ILogger<PolicyController> _logger;
@@ -22,19 +25,19 @@ namespace HDIApi.Controllers
             IActionResult result;
             try
             {
-                var policy = await _policyProvider.GetPolicyByDriver(idDriver);
-                if (policy == null)
+                var policyList = await _policyProvider.GetAllPolicyByDriver(idDriver);
+                if (!policyList.Any())
                 {
                     result = NotFound();
                 }
                 else
                 {
-                    result = Ok(policy);
+                    result = Ok(policyList);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                result = StatusCode(500);
+                result = StatusCode(500, ex.Message);
             }
             return result;
         }
