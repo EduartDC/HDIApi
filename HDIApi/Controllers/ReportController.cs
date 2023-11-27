@@ -41,5 +41,28 @@ namespace HDIApi.Controllers
             }
             return result;
         }
+
+        [HttpGet("GetReportById/{idReport}")]
+        public async Task<IActionResult> GetReportById(string idReport)
+        {
+            IActionResult result;
+            try
+            {
+                var respond = await _reportProvider.GetReportById(idReport);
+                if (respond == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(respond);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode(500, ex.Message);
+            }
+            return result;
+        }
     }
 }

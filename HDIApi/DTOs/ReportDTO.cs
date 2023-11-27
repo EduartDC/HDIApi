@@ -28,7 +28,7 @@ namespace HDIApi.DTOs
 
         public DriverclientDTO DriverClient { get; set; } = null!;
 
-        public List<ImageDTO> Images { get; } = new List<ImageDTO>();
+        public List<ImageDTO> Images { get; set; }
 
         public List<InvolvedDTO> Involveds { get; } = new List<InvolvedDTO>();
 
