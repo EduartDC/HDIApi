@@ -1,10 +1,10 @@
 ﻿using HDIApi.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Runtime.InteropServices;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HDIApi.Utility
 {
@@ -27,22 +27,21 @@ namespace HDIApi.Utility
             {
                 InitializeConfiguration();
             }
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("JWT:Key")));
-            long iat = (long)DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
+            
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, iat.ToString()),
-                new Claim("id", newToken.idUser.ToString()),
-                new Claim("roleType", newToken.role),
+                new Claim(ClaimTypes.Sid, newToken.idUser),
+                new Claim(ClaimTypes.Name, newToken.fullName),
+                new Claim(ClaimTypes.Role, newToken.role),
             };
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetValue<string>("JWT:Key")));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60),
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: creds
             );
 
