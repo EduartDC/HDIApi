@@ -55,6 +55,7 @@ builder.Services.AddDbContext<InsurancedbContext>(options =>
 builder.Services.AddScoped<IUsersProvider, UsersProvider>();
 builder.Services.AddScoped<IPolicyProvider, PolicyProvider>();
 builder.Services.AddScoped<IReportProvider, ReportProvider>();
+builder.Services.AddScoped<IAccidentProvider, AccidentProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
