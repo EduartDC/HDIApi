@@ -30,5 +30,19 @@ namespace HDIApi.Bussines
                 return await _context.Employees.Where(x => x.Username == login.User).FirstOrDefaultAsync();
             }
         }
+
+        public async Task<Driverclient> LoginDriver(LoginDTO login)
+        {
+            bool canConnect = await _context.Database.CanConnectAsync();
+
+            if (!canConnect)
+            {
+                throw new Exception("No se pudo establecer conexión con la base de datos.");
+            }
+            else
+            {
+                return await _context.Driverclients.Where(x => x.LicenseNumber == login.User).FirstOrDefaultAsync();
+            }
+        }
     }
 }

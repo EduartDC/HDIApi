@@ -7,7 +7,7 @@ namespace HDIApi.Controllers
     
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class PolicyController : ControllerBase
     {
         private readonly ILogger<PolicyController> _logger;

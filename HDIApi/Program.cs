@@ -63,7 +63,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.Use(async (context, next) =>
+{
+    // Obtener los encabezados de la solicitud
+    var headers = context.Request.Headers;
 
+    // Recorrer los encabezados y mostrarlos en la consola
+    foreach (var (headerName, headerValues) in headers)
+    {
+        Console.WriteLine($"{headerName}: {string.Join(", ", headerValues)}");
+    }
+
+    await next.Invoke();
+});
 app.UseAuthentication();
 app.UseAuthorization();
 

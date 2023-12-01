@@ -27,11 +27,13 @@ namespace HDIApi.Controllers
             try
             {
                 Employee userInfo = await _usersProvider.LoginEmployee(infologin);
-                if (userInfo == null || !userInfo.Password.Equals(infologin.Password))
+                Driverclient driverInfo = await _usersProvider.LoginDriver(infologin);
+
+                if (userInfo == null && driverInfo == null)
                 {
                     result = NotFound();
                 }
-                else
+                else if(userInfo != null && userInfo.Password.Equals(infologin.Password))
                 {
 
                         var token = new TokenDTO
@@ -44,6 +46,21 @@ namespace HDIApi.Controllers
                     result = Ok(TokenGenerator.GetToken(token));
 
 
+                }
+                else if (driverInfo != null && driverInfo.Password.Equals(infologin.Password))
+                {
+                    var token = new TokenDTO
+                    {
+                        token = "",
+                        idUser = driverInfo.IdDriverClient,
+                        role = "cliente",
+                        fullName = driverInfo.NameDriver + " " + driverInfo.LastNameDriver
+                    };
+                    result = Ok(TokenGenerator.GetToken(token));
+                }
+                else
+                {
+                    result = NotFound();
                 }
             }
             catch (Exception ex)
