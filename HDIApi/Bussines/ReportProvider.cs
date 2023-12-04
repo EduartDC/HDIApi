@@ -60,6 +60,8 @@ namespace HDIApi.Bussines
                         itemDTO.Longitude = report.Longitude;
                         itemDTO.Location = report.Location;
                         itemDTO.NameLocation = report.NameLocation;
+                        itemDTO.ReportStatus = report.ReportStatus;
+                        itemDTO.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster;
 
                         var vehicle = new VehicleclientDTO();
                         vehicle.IdVehicleClient = report.VehicleClientIdVehicleClientNavigation.IdVehicleClient;
@@ -69,6 +71,7 @@ namespace HDIApi.Bussines
                         vehicle.Plate = report.VehicleClientIdVehicleClientNavigation.Plate;
                         vehicle.Year = report.VehicleClientIdVehicleClientNavigation.Year;
                         vehicle.SerialNumber = report.VehicleClientIdVehicleClientNavigation.SerialNumber;
+                        vehicle.IdVehicleClient = report.VehicleClientIdVehicleClientNavigation.IdVehicleClient;
                         itemDTO.VehicleClient = vehicle;
 
                         var driver = new DriverclientDTO();
@@ -93,6 +96,7 @@ namespace HDIApi.Bussines
                             var opinion = new OpinionadjusterDTO();
                             opinion.CreationDate = (DateTime)report.OpinionAdjusterIdOpinionAdjusterNavigation.CreationDate;
                             opinion.Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description;
+                            opinion.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster;
                             itemDTO.OpinionAdjuster = opinion;
                         }
                         result = itemDTO;
