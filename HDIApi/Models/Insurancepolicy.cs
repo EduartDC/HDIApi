@@ -13,13 +13,15 @@ public partial class Insurancepolicy
 
     public int? TermAmount { get; set; }
 
-    public double? Price { get; set; }
+    public float? Price { get; set; }
 
     public string? PolicyType { get; set; }
 
     public string DriverClientIdDriverClient { get; set; } = null!;
 
+    public string VehicleClientIdVehicleClient { get; set; } = null!;
+
     public virtual Driverclient DriverClientIdDriverClientNavigation { get; set; } = null!;
 
-    public virtual ICollection<Vehicleclient> Vehicleclients { get; } = new List<Vehicleclient>();
+    public virtual Vehicleclient VehicleClientIdVehicleClientNavigation { get; set; } = null!;
 }
