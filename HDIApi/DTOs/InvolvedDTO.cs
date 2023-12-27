@@ -12,8 +12,8 @@ namespace HDIApi.DTOs
         [Required]
         public string LicenseNumber { get; set; }
 
-        public string? IdCarInvolved { get; set; } = null!;
+        public string? IdCarInvolved { get; set; }
 
-        public CarinvolvedDTO? CarInvolved { get; set; } = null!;
+        public CarinvolvedDTO? CarInvolved { get; set; }
     }
 }

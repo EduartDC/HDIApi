@@ -30,7 +30,7 @@ namespace HDIApi.DTOs
 
         public List<ImageDTO> Images { get; set; }
 
-        public List<InvolvedDTO> Involveds { get; } = new List<InvolvedDTO>();
+        public List<InvolvedDTO> Involveds { get; set;} = new List<InvolvedDTO>();
 
         public OpinionadjusterDTO? OpinionAdjuster { get; set; }
 
