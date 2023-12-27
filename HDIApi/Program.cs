@@ -1,6 +1,7 @@
 using HDIApi.Bussines;
 using HDIApi.Bussines.Interface;
 using HDIApi.Models;
+using HDIApi.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,8 @@ builder.Services.AddDbContext<InsurancedbContext>(options =>
 builder.Services.AddScoped<IUsersProvider, UsersProvider>();
 builder.Services.AddScoped<IPolicyProvider, PolicyProvider>();
 builder.Services.AddScoped<IReportProvider, ReportProvider>();
+builder.Services.AddScoped<IDriverProvider, DriverProvider>();
+builder.Services.AddScoped<IEmployeeProvider, EmployeeProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
