@@ -1,6 +1,7 @@
 using HDIApi.Bussines;
 using HDIApi.Bussines.Interface;
 using HDIApi.Models;
+using HDIApi.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,8 @@ builder.Services.AddDbContext<InsurancedbContext>(options =>
 builder.Services.AddScoped<IUsersProvider, UsersProvider>();
 builder.Services.AddScoped<IPolicyProvider, PolicyProvider>();
 builder.Services.AddScoped<IReportProvider, ReportProvider>();
-builder.Services.AddScoped<IAccidentProvider, AccidentProvider>();
+builder.Services.AddScoped<IDriverProvider, DriverProvider>();
+builder.Services.AddScoped<IEmployeeProvider, EmployeeProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -64,7 +66,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.Use(async (context, next) =>
+{
+    // Obtener los encabezados de la solicitud
+    var headers = context.Request.Headers;
 
+    // Recorrer los encabezados y mostrarlos en la consola
+    foreach (var (headerName, headerValues) in headers)
+    {
+        Console.WriteLine($"{headerName}: {string.Join(", ", headerValues)}");
+    }
+
+    await next.Invoke();
+});
 app.UseAuthentication();
 app.UseAuthorization();
 

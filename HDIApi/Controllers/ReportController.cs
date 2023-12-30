@@ -7,7 +7,7 @@ namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-   
+
     public class ReportController : ControllerBase
     {
         private readonly ILogger<ReportController> _logger;
@@ -56,6 +56,50 @@ namespace HDIApi.Controllers
                 else
                 {
                     result = Ok(respond);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode(500, ex.Message);
+            }
+            return result;
+        }
+
+        [HttpPost("PostOpinion")]
+        public async Task<IActionResult> PostOpinion([FromBody] NewOpinionadjusterDTO opinion){
+            IActionResult result;
+            try
+            {
+                var respond = await _reportProvider.PostOpinion(opinion);
+                if (respond)
+                {
+                    result = Ok();
+                }
+                else
+                {
+                    result = BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode(500, ex.Message);
+            }
+            return result;
+        }
+
+        [HttpPut("PutOpinion")]
+        public async Task<IActionResult> PutOpinion([FromBody] NewOpinionadjusterDTO opinion){
+            IActionResult result;
+            try
+            {
+                var respond = await _reportProvider.PutOpinion(opinion);
+                if (respond)
+                {
+                    result = Ok();
+                }
+                else
+                {
+                    result = BadRequest();
                 }
             }
             catch (Exception ex)
