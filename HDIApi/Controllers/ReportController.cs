@@ -7,7 +7,7 @@ namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-   
+
     public class ReportController : ControllerBase
     {
         private readonly ILogger<ReportController> _logger;
@@ -63,6 +63,75 @@ namespace HDIApi.Controllers
                 result = StatusCode(500, ex.Message);
             }
             return result;
+        }
+
+
+        [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
+        public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
+        {
+            int code = 0;
+            List<PreviewReportDTO> list = new List<PreviewReportDTO>();
+            try
+            {
+                (code, list) = await _reportProvider.GetPreviewReportsByEmployee(idEmployee);
+                if (code == 200)
+                {
+                    return Ok(list);
+                }
+                else
+                {
+                    return StatusCode(code);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+        }
+        [HttpPost("PostOpinion")]
+        public async Task<IActionResult> PostOpinion([FromBody] NewOpinionadjusterDTO opinion){
+            IActionResult result;
+            try
+            {
+                var respond = await _reportProvider.PostOpinion(opinion);
+                if (respond)
+                {
+                    result = Ok();
+                }
+                else
+                {
+                    result = BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode(500, ex.Message);
+            }
+            return result;
+        }
+
+        [HttpPut("PutOpinion")]
+        public async Task<IActionResult> PutOpinion([FromBody] NewOpinionadjusterDTO opinion){
+            IActionResult result;
+            try
+            {
+                var respond = await _reportProvider.PutOpinion(opinion);
+                if (respond)
+                {
+                    result = Ok();
+                }
+                else
+                {
+                    result = BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode(500, ex.Message);
+            }
+            return result;
+
         }
     }
 }

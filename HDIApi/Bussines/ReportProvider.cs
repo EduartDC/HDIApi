@@ -17,6 +17,17 @@ namespace HDIApi.Bussines
             _context = context;
 
         }
+
+        public Task<bool> CreateNewOpinion(NewOpinionadjusterDTO opinion)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateOpinion(OpinionadjusterDTO opinion)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<NewReportDTO> CreateReport(NewReportDTO report)
         {
             throw new NotImplementedException();
@@ -29,7 +40,7 @@ namespace HDIApi.Bussines
 
         public async Task<ReportDTO> GetReportById(string idReport)
         {
-            var result = new ReportDTO();
+            ReportDTO result = null;
             try
             {
                 bool canConnect = await _context.Database.CanConnectAsync();
@@ -90,7 +101,16 @@ namespace HDIApi.Bussines
                             images.Add(image);
                         }
                         itemDTO.Images = images;
-
+                        var involveds = new List<InvolvedDTO>();
+                        foreach (var item in report.Involveds)
+                        {
+                            var involved = new InvolvedDTO();
+                            involved.LastNameInvolved = item.LastNameInvolved;
+                            involved.NameInvolved = item.NameInvolved;
+                            involved.LicenseNumber = item.LicenseNumber;
+                            involveds.Add(involved);
+                        }
+                        itemDTO.Involveds = involveds;
                         if (report.OpinionAdjusterIdOpinionAdjuster != null)
                         {
                             var opinion = new OpinionadjusterDTO();
@@ -109,6 +129,100 @@ namespace HDIApi.Bussines
                 throw new Exception(ex.Message);
             }
             return result;
+        }
+
+
+        public async Task<(int, List<PreviewReportDTO>)> GetPreviewReportsByEmployee(string idEmployee)
+        {
+            int code = 0;
+            List<PreviewReportDTO> reportsList = new List<PreviewReportDTO>();
+            try
+            {
+                var listTemp = _context.Accidents
+                .Include(d => d.DriverClientIdDriverClientNavigation)
+                .Where(a => a.EmployeeIdEmployee.Equals(idEmployee)).ToList();
+
+                foreach (var item in listTemp)
+                {
+                    PreviewReportDTO temp = new PreviewReportDTO()
+                    {
+                        NameClient = item.DriverClientIdDriverClientNavigation.NameDriver,
+                        ReportNumber = item.IdAccident,
+                        StatusReport = item.ReportStatus,
+                        ReportDate = item.AccidentDate.GetValueOrDefault(),
+                        Latitude = item.Latitude,
+                        Longitude = item.Longitude
+                    };
+                    reportsList.Add(temp);
+                }
+                code = 200;
+            } catch (Exception)
+            {
+                code = 500;
+            }
+            return (code, reportsList);
+        }
+
+        public async Task<bool> PutOpinion(NewOpinionadjusterDTO opinion)
+        {
+            var result = false;
+            try
+            {
+                bool canConnect = await _context.Database.CanConnectAsync();
+
+                if (!canConnect)
+                {
+                    throw new Exception("No se pudo establecer conexión con la base de datos.");
+                }
+                else
+                {
+                    var opinionAdjuster = await _context.Opinionadjusters.Where(i => i.IdOpinionAdjuster == opinion.IdOpinionAdjuster).FirstOrDefaultAsync();
+                    if(opinionAdjuster.Description != opinion.Description)
+                        opinionAdjuster.Description = opinion.Description;
+                    await _context.SaveChangesAsync();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
+        }
+
+        public async Task<bool> PostOpinion(NewOpinionadjusterDTO opinion)
+        {
+            var result = false;
+            try
+            {
+                bool canConnect = await _context.Database.CanConnectAsync();
+
+                if (!canConnect)
+                {
+                    throw new Exception("No se pudo establecer conexión con la base de datos.");
+                }
+                else
+                {
+                    var opinionAdjuster = new Opinionadjuster();
+                    opinionAdjuster.CreationDate = opinion.CreationDate;
+                    opinionAdjuster.Description = opinion.Description;
+                    opinionAdjuster.IdOpinionAdjuster = Guid.NewGuid().ToString();
+
+                    var accident = await _context.Accidents.Where(i => i.IdAccident == opinion.IdAccident).FirstOrDefaultAsync();
+
+                    accident.OpinionAdjusterIdOpinionAdjusterNavigation = opinionAdjuster;
+                    _context.Opinionadjusters.Add(opinionAdjuster);
+
+                    await _context.SaveChangesAsync();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
+
         }
     }
 }

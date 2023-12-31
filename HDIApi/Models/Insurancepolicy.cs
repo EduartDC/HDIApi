@@ -21,6 +21,10 @@ public partial class Insurancepolicy
 
     public string VehicleClientIdVehicleClient { get; set; } = null!;
 
+    public string? CoveragePeriod { get; set; }
+
+    public string? CoverageType { get; set; }
+
     public virtual Driverclient DriverClientIdDriverClientNavigation { get; set; } = null!;
 
     public virtual Vehicleclient VehicleClientIdVehicleClientNavigation { get; set; } = null!;
