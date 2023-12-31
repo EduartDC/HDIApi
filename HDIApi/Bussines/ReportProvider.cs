@@ -110,6 +110,37 @@ namespace HDIApi.Bussines
             }
             return result;
         }
+
+        public async Task<(int, List<PreviewReportDTO>)> GetPreviewReportsByEmployee(string idEmployee)
+        {
+            int code = 0;
+            List<PreviewReportDTO> reportsList = new List<PreviewReportDTO>();
+            try
+            {
+                var listTemp = _context.Accidents
+                .Include(d => d.DriverClientIdDriverClientNavigation)
+                .Where(a=>a.EmployeeIdEmployee.Equals(idEmployee)).ToList();
+
+                foreach(var item in listTemp)
+                {
+                    PreviewReportDTO temp = new PreviewReportDTO()
+                    {
+                        NameClient = item.DriverClientIdDriverClientNavigation.NameDriver,
+                        ReportNumber = item.IdAccident,
+                        StatusReport = item.ReportStatus,
+                        ReportDate =  item.AccidentDate.GetValueOrDefault(),
+                        Latitude = item.Latitude,
+                        Longitude = item.Longitude
+                    };
+                    reportsList.Add(temp);
+                }
+                code= 200;
+            }catch(Exception)
+            {
+                code = 500;
+            }
+            return (code, reportsList);
+        }
     }
 }
 

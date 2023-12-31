@@ -64,5 +64,25 @@ namespace HDIApi.Controllers
             }
             return result;
         }
+        
+          [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
+        public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
+        {
+            int code = 0;
+            List<PreviewReportDTO> list = new List<PreviewReportDTO>();
+            try{
+                (code,list) = await _reportProvider.GetPreviewReportsByEmployee(idEmployee);
+                if(code == 200)
+                {
+                    return Ok(list);
+                }else{
+                    return StatusCode(code);
+                }
+            }catch(Exception)
+            {
+                return StatusCode(500);
+            }
+            
+        }
     }
 }
