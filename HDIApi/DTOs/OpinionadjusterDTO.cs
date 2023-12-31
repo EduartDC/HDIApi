@@ -1,4 +1,6 @@
-﻿namespace HDIApi.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HDIApi.DTOs
 {
     public class OpinionadjusterDTO
     {
@@ -6,6 +8,9 @@
 
         public DateTime CreationDate { get; set; }
 
+        [Required(ErrorMessage = "Es necesaria la decision del ajustador")]
         public string Description { get; set; }
+
+        public string IdAccident { get; set; } = null!;
     }
 }
