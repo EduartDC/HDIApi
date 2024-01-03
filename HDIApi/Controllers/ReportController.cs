@@ -26,13 +26,13 @@ namespace HDIApi.Controllers
             try
             {
                 var respond = await _reportProvider.CreateReport(report);
-                if (respond == null)
+                if (respond)
                 {
-                    result = BadRequest();
+                    result = Ok();
                 }
                 else
                 {
-                    result = Ok();
+                    result = BadRequest();
                 }
             }
             catch (Exception ex)

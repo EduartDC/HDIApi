@@ -18,25 +18,26 @@ namespace HDIApi.Bussines
 
         }
 
-        public Task<bool> CreateNewOpinion(NewOpinionadjusterDTO opinion)
+        public async Task<bool> CreateReport(NewReportDTO report)
         {
-            throw new NotImplementedException();
+            var result = true;
+            try{
+                bool canConnect = await _context.Database.CanConnectAsync();
+
+                if(!canConnect){
+                    throw new Exception("No se pudo establecer conexión con la base de datos.");
+                }
+                else{
+                    //crear reporte
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return result;
         }
 
-        public Task<bool> UpdateOpinion(OpinionadjusterDTO opinion)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<NewReportDTO> CreateReport(NewReportDTO report)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<NewReportDTO> GetReportByDriver(string idDriver)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<ReportDTO> GetReportById(string idReport)
         {
@@ -212,6 +213,7 @@ namespace HDIApi.Bussines
 
                     accident.OpinionAdjusterIdOpinionAdjusterNavigation = opinionAdjuster;
                     _context.Opinionadjusters.Add(opinionAdjuster);
+                    accident.ReportStatus = "En proceso";
 
                     await _context.SaveChangesAsync();
                     result = true;
@@ -224,6 +226,7 @@ namespace HDIApi.Bussines
             return result;
 
         }
+
     }
 }
 
