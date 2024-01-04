@@ -7,7 +7,7 @@ public partial class Image
 {
     public string Idimages { get; set; } = null!;
 
-    public byte[]? ImageReport { get; set; }
+    public string? ImageReport { get; set; }
 
     public string AccidentIdAccident { get; set; } = null!;
 

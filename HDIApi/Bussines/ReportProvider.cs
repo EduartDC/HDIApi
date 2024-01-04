@@ -20,7 +20,7 @@ namespace HDIApi.Bussines
 
         public async Task<bool> CreateReport(NewReportDTO report)
         {
-            var result = true;
+            var result = false;
             try{
                 bool canConnect = await _context.Database.CanConnectAsync();
 
@@ -28,7 +28,65 @@ namespace HDIApi.Bussines
                     throw new Exception("No se pudo establecer conexión con la base de datos.");
                 }
                 else{
-                    //crear reporte
+                    using (var transaction = _context.Database.BeginTransaction())
+                    {
+                        try{
+                            var newreport = new Accident();
+                            newreport.IdAccident = Guid.NewGuid().ToString();
+                            newreport.AccidentDate = DateTime.Now;
+                            newreport.ReportStatus = "Nuevo";
+                            newreport.DriverClientIdDriverClient = report.IdDriverClient;
+                            newreport.VehicleClientIdVehicleClient = report.IdVehicleClient;
+                            newreport.Latitude = report.Latitude;
+                            newreport.Longitude = report.Longitude;
+                            newreport.Location = report.Location;
+
+                            _context.Accidents.Add(newreport);
+                            _context.SaveChanges();
+
+                            var images = new List<Image>();
+                            foreach(var item in report.Images){
+                                var image = new Image();
+                                image.ImageReport = item;
+                                image.Idimages = Guid.NewGuid().ToString();
+                                image.AccidentIdAccident = newreport.IdAccident;
+                                images.Add(image);
+                            }
+                            _context.Images.AddRange(images);
+                            _context.SaveChanges();
+
+                            var involveds = new List<Involved>();
+                            foreach(var item  in report.Involveds){
+                                var newinvolved = new Involved();
+                                newinvolved.NameInvolved = item.NameInvolved;
+                                newinvolved.LastNameInvolved = item.LastNameInvolved;
+                                newinvolved.LicenseNumber = item.LicenseNumber;
+                                newinvolved.IdInvolved = Guid.NewGuid().ToString();
+                                newinvolved.AccidentIdAccident= newreport.IdAccident;
+                                if(item.CarInvolved != null)
+                                    if(item.CarInvolved.Color != null || item.CarInvolved.Model != null || item.CarInvolved.Plate != null || item.CarInvolved.Brand != null){
+                                        var newcar = new Carinvolved();
+                                        newcar.Color = item.CarInvolved.Color;
+                                        newcar.Model = item.CarInvolved.Model;
+                                        newcar.Plate = item.CarInvolved.Plate;
+                                        newcar.Brand = item.CarInvolved.Brand;
+                                        newcar.IdCarInvolved = Guid.NewGuid().ToString();
+                                        newinvolved.CarInvolvedIdCarInvolved = newcar.IdCarInvolved;
+                                        newinvolved.CarInvolvedIdCarInvolvedNavigation = newcar;
+                                    }
+                                involveds.Add(newinvolved);
+                            }
+                            _context.Involveds.AddRange(involveds);
+                            _context.SaveChanges();
+                            transaction.Commit();
+                            result = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw new Exception(ex.Message);
+                        }
+                    }
                 }
             }
             catch (Exception ex)

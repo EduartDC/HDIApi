@@ -204,7 +204,7 @@ public partial class InsurancedbContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("Accident_idAccident");
             entity.Property(e => e.ImageReport)
-                .HasColumnType("blob")
+                .HasMaxLength(2000)
                 .HasColumnName("imageReport");
 
             entity.HasOne(d => d.AccidentIdAccidentNavigation).WithMany(p => p.Images)
