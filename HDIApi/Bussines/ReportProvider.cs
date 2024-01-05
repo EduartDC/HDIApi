@@ -128,6 +128,7 @@ namespace HDIApi.Bussines
 
                     if (report != null)
                     {
+
                         var itemDTO = new ReportDTO
                         {
                             IdAccident = report.IdAccident,
@@ -203,6 +204,7 @@ namespace HDIApi.Bussines
                     PreviewReportDTO temp = new PreviewReportDTO()
                     {
                         NameClient = item.DriverClientIdDriverClientNavigation.NameDriver + " " + item.DriverClientIdDriverClientNavigation.LastNameDriver,
+
                         ReportNumber = item.IdAccident,
                         StatusReport = item.ReportStatus,
                         ReportDate = item.AccidentDate.GetValueOrDefault(),
@@ -235,6 +237,7 @@ namespace HDIApi.Bussines
                 else
                 {
                     var opinionAdjuster = await _context.Opinionadjusters.Where(i => i.IdOpinionAdjuster == opinion.IdOpinionAdjuster).FirstOrDefaultAsync();
+
                     if (opinionAdjuster != null)
                     {
                         if (opinionAdjuster.Description != opinion.Description)
@@ -270,8 +273,10 @@ namespace HDIApi.Bussines
                     opinionAdjuster.IdOpinionAdjuster = Guid.NewGuid().ToString();
 
                     var accident = await _context.Accidents.Where(i => i.IdAccident == opinion.IdAccident).FirstOrDefaultAsync();
+
                     if (accident != null && accident.OpinionAdjusterIdOpinionAdjuster == null)
                     {
+
                         accident.OpinionAdjusterIdOpinionAdjusterNavigation = opinionAdjuster;
                         _context.Opinionadjusters.Add(opinionAdjuster);
                         accident.ReportStatus = "Dictaminado";

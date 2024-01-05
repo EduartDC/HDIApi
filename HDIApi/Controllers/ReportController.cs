@@ -7,7 +7,8 @@ namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-  //  [Authorize]
+    [Authorize]
+
     public class ReportController : ControllerBase
     {
         private readonly ILogger<ReportController> _logger;
@@ -41,7 +42,8 @@ namespace HDIApi.Controllers
             }
             return result;
         }
-      //  [Authorize(Roles = "ajustador")]
+
+        [Authorize(Roles = "ajustador")]
         [HttpGet("GetReportById/{idReport}")]
         public async Task<IActionResult> GetReportById(string idReport)
         {
@@ -90,6 +92,7 @@ namespace HDIApi.Controllers
         }
 
         [Authorize(Roles = "ajustador")]
+
         [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
         public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
         {

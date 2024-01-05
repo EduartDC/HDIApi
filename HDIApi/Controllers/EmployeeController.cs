@@ -51,7 +51,9 @@ namespace HDIApi.Controllers
             return StatusCode(code);
         }
 
+
         [Authorize(Roles = "admin,asistente")]
+
         [HttpGet("GetEmployeeList")]
         public async Task<IActionResult> GetEmployeeList()
         {
