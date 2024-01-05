@@ -130,7 +130,7 @@ namespace HDIApi.Bussines
                         itemDTO.Longitude = report.Longitude;
                         itemDTO.Location = report.Location;
                         itemDTO.NameLocation = report.NameLocation;
-                        itemDTO.ReportStatus = report.ReportStatus;
+                        itemDTO.ReportStatus = "Pendiente";
                         itemDTO.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster;
 
                         var vehicle = new VehicleclientDTO();
@@ -236,10 +236,12 @@ namespace HDIApi.Bussines
                 else
                 {
                     var opinionAdjuster = await _context.Opinionadjusters.Where(i => i.IdOpinionAdjuster == opinion.IdOpinionAdjuster).FirstOrDefaultAsync();
-                    if(opinionAdjuster.Description != opinion.Description)
-                        opinionAdjuster.Description = opinion.Description;
-                    await _context.SaveChangesAsync();
-                    result = true;
+                    if(opinionAdjuster != null){
+                        if(opinionAdjuster.Description != opinion.Description)
+                            opinionAdjuster.Description = opinion.Description;
+                        await _context.SaveChangesAsync();
+                        result = true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -268,13 +270,14 @@ namespace HDIApi.Bussines
                     opinionAdjuster.IdOpinionAdjuster = Guid.NewGuid().ToString();
 
                     var accident = await _context.Accidents.Where(i => i.IdAccident == opinion.IdAccident).FirstOrDefaultAsync();
+                    if(accident != null && accident.OpinionAdjusterIdOpinionAdjuster == null){
+                        accident.OpinionAdjusterIdOpinionAdjusterNavigation = opinionAdjuster;
+                        _context.Opinionadjusters.Add(opinionAdjuster);
+                        accident.ReportStatus = "Dictaminado";
 
-                    accident.OpinionAdjusterIdOpinionAdjusterNavigation = opinionAdjuster;
-                    _context.Opinionadjusters.Add(opinionAdjuster);
-                    accident.ReportStatus = "En proceso";
-
-                    await _context.SaveChangesAsync();
-                    result = true;
+                        await _context.SaveChangesAsync();
+                        result = true;
+                    }
                 }
             }
             catch (Exception ex)

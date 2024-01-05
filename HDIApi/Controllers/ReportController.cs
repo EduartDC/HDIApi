@@ -7,7 +7,7 @@ namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
+    [Authorize]
     public class ReportController : ControllerBase
     {
         private readonly ILogger<ReportController> _logger;
@@ -18,7 +18,7 @@ namespace HDIApi.Controllers
             _logger = logger;
             _reportProvider = reportProvider;
         }
-
+        [Authorize(Roles = "conductor")]
         [HttpPost("CreateReport")]
         public async Task<IActionResult> CreateReport([FromBody] NewReportDTO report)
         {
@@ -41,7 +41,7 @@ namespace HDIApi.Controllers
             }
             return result;
         }
-
+        [Authorize(Roles = "ajustador")]
         [HttpGet("GetReportById/{idReport}")]
         public async Task<IActionResult> GetReportById(string idReport)
         {
@@ -65,7 +65,7 @@ namespace HDIApi.Controllers
             return result;
         }
 
-
+        
         [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
         public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
         {
@@ -89,6 +89,7 @@ namespace HDIApi.Controllers
             }
 
         }
+        [Authorize(Roles = "ajustador")]
         [HttpPost("PostOpinion")]
         public async Task<IActionResult> PostOpinion([FromBody] NewOpinionadjusterDTO opinion){
             IActionResult result;
@@ -110,7 +111,7 @@ namespace HDIApi.Controllers
             }
             return result;
         }
-
+        [Authorize(Roles = "ajustador")]
         [HttpPut("PutOpinion")]
         public async Task<IActionResult> PutOpinion([FromBody] NewOpinionadjusterDTO opinion){
             IActionResult result;
