@@ -56,6 +56,9 @@ builder.Services.AddScoped<IPolicyProvider, PolicyProvider>();
 builder.Services.AddScoped<IReportProvider, ReportProvider>();
 builder.Services.AddScoped<IDriverProvider, DriverProvider>();
 builder.Services.AddScoped<IEmployeeProvider, EmployeeProvider>();
+builder.Services.AddScoped<IInsurancePolicyProvider, InsurancePolicyProvider>();
+builder.Services.AddScoped<IAccidentProvider, AccidentProvider>();
+builder.Services.AddScoped<IVehicleProvider, VehicleProvider>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

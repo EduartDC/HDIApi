@@ -156,18 +156,6 @@ namespace HDIApi.Bussines
                             };
                         }
 
-                        /*if (report.DriverClientIdDriverClientNavigation != null)
-                        {
-                            itemDTO.DriverClient = new DriverclientDTO
-                            {
-                                IdDriverClient = report.DriverClientIdDriverClientNavigation.IdDriverClient,
-                                NameDriver = report.DriverClientIdDriverClientNavigation.NameDriver,
-                                LastNameDriver = report.DriverClientIdDriverClientNavigation.LastNameDriver,
-                                LicenseNumber = report.DriverClientIdDriverClientNavigation.LicenseNumber,
-                                TelephoneNumber = report.DriverClientIdDriverClientNavigation.TelephoneNumber
-                            };
-                        }*/
-
                         itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
 
                         itemDTO.Involveds = report.Involveds?.Select(item => new InvolvedDTO
