@@ -21,16 +21,20 @@ namespace HDIApi.Bussines
         public async Task<bool> CreateReport(NewReportDTO report)
         {
             var result = false;
-            try{
+            try
+            {
                 bool canConnect = await _context.Database.CanConnectAsync();
 
-                if(!canConnect){
+                if (!canConnect)
+                {
                     throw new Exception("No se pudo establecer conexión con la base de datos.");
                 }
-                else{
+                else
+                {
                     using (var transaction = _context.Database.BeginTransaction())
                     {
-                        try{
+                        try
+                        {
                             var newreport = new Accident();
                             newreport.IdAccident = Guid.NewGuid().ToString();
                             newreport.AccidentDate = DateTime.Now;
@@ -45,7 +49,8 @@ namespace HDIApi.Bussines
                             _context.SaveChanges();
 
                             var images = new List<Image>();
-                            foreach(var item in report.Images){
+                            foreach (var item in report.Images)
+                            {
                                 var image = new Image();
                                 image.ImageReport = item;
                                 image.Idimages = Guid.NewGuid().ToString();
@@ -56,15 +61,17 @@ namespace HDIApi.Bussines
                             _context.SaveChanges();
 
                             var involveds = new List<Involved>();
-                            foreach(var item  in report.Involveds){
+                            foreach (var item in report.Involveds)
+                            {
                                 var newinvolved = new Involved();
                                 newinvolved.NameInvolved = item.NameInvolved;
                                 newinvolved.LastNameInvolved = item.LastNameInvolved;
                                 newinvolved.LicenseNumber = item.LicenseNumber;
                                 newinvolved.IdInvolved = Guid.NewGuid().ToString();
-                                newinvolved.AccidentIdAccident= newreport.IdAccident;
-                                if(item.CarInvolved != null)
-                                    if(item.CarInvolved.Color != null || item.CarInvolved.Model != null || item.CarInvolved.Plate != null || item.CarInvolved.Brand != null){
+                                newinvolved.AccidentIdAccident = newreport.IdAccident;
+                                if (item.CarInvolved != null)
+                                    if (item.CarInvolved.Color != null || item.CarInvolved.Model != null || item.CarInvolved.Plate != null || item.CarInvolved.Brand != null)
+                                    {
                                         var newcar = new Carinvolved();
                                         newcar.Color = item.CarInvolved.Color;
                                         newcar.Model = item.CarInvolved.Model;
@@ -111,74 +118,76 @@ namespace HDIApi.Bussines
                 else
                 {
                     var report = _context.Accidents
-                        .Include(c=>c.VehicleClientIdVehicleClientNavigation)
-                        .Include(c=>c.DriverClientIdDriverClientNavigation)
-                        .Include(i=>i.Images)
-                        .Include(e=>e.Involveds)
-                        .Include(o=>o.OpinionAdjusterIdOpinionAdjusterNavigation)
+                        .Include(c => c.VehicleClientIdVehicleClientNavigation)
+                        .Include(c => c.DriverClientIdDriverClientNavigation)
+                        .Include(i => i.Images)
+                        .Include(e => e.Involveds)
+                        .Include(o => o.OpinionAdjusterIdOpinionAdjusterNavigation)
                         .Where(x => x.IdAccident == idReport)
                         .FirstOrDefault();
 
                     if (report != null)
                     {
-                        var itemDTO = new ReportDTO();
-                        /*itemDTO.IdAccident = report.IdAccident;
-                        itemDTO.AccidentDate = report.AccidentDate;
-                        itemDTO.IdDriverClient = report.DriverClientIdDriverClient;
-                        itemDTO.IdVehicleClient = report.VehicleClientIdVehicleClient;
-                        itemDTO.Latitude = report.Latitude;
-                        itemDTO.Longitude = report.Longitude;
-                        itemDTO.Location = report.Location;
-                        itemDTO.NameLocation = report.NameLocation;
-                        itemDTO.ReportStatus = report.ReportStatus;
-                        itemDTO.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster;
-
-                        var vehicle = new VehicleclientDTO();
-                        vehicle.IdVehicleClient = report.VehicleClientIdVehicleClientNavigation.IdVehicleClient;
-                        vehicle.Brand = report.VehicleClientIdVehicleClientNavigation.Brand;
-                        vehicle.Model = report.VehicleClientIdVehicleClientNavigation.Model;
-                        vehicle.Color = report.VehicleClientIdVehicleClientNavigation.Color;
-                        vehicle.Plate = report.VehicleClientIdVehicleClientNavigation.Plate;
-                        vehicle.Year = report.VehicleClientIdVehicleClientNavigation.Year;
-                        vehicle.SerialNumber = report.VehicleClientIdVehicleClientNavigation.SerialNumber;
-                        vehicle.IdVehicleClient = report.VehicleClientIdVehicleClientNavigation.IdVehicleClient;
-                        itemDTO.VehicleClient = vehicle;
-
-                        var driver = new DriverclientDTO();
-                        driver.IdDriverClient = report.DriverClientIdDriverClientNavigation.IdDriverClient;
-                        driver.NameDriver = report.DriverClientIdDriverClientNavigation.NameDriver;
-                        driver.LastNameDriver = report.DriverClientIdDriverClientNavigation.LastNameDriver;
-                        driver.LicenseNumber = report.DriverClientIdDriverClientNavigation.LicenseNumber;
-                        driver.TelephoneNumber = report.DriverClientIdDriverClientNavigation.TelephoneNumber;
-                        itemDTO.DriverClient = driver;
-
-                        var images = new List<ImageDTO>();
-                        foreach (var item in report.Images)
+                        var itemDTO = new ReportDTO
                         {
-                            var image = new ImageDTO();
-                            image.ImageReport = item.ImageReport;
-                            images.Add(image);
+                            IdAccident = report.IdAccident,
+                            AccidentDate = report.AccidentDate,
+                            IdDriverClient = report.DriverClientIdDriverClient,
+                            IdVehicleClient = report.VehicleClientIdVehicleClient,
+                            Latitude = report.Latitude,
+                            Longitude = report.Longitude,
+                            Location = report.Location,
+                            NameLocation = report.NameLocation,
+                            ReportStatus = report.ReportStatus,
+                            IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster
+                        };
+
+                        if (report.VehicleClientIdVehicleClientNavigation != null)
+                        {
+                            itemDTO.VehicleClient = new VehicleclientDTO
+                            {
+                                IdVehicleClient = report.VehicleClientIdVehicleClientNavigation.IdVehicleClient,
+                                Brand = report.VehicleClientIdVehicleClientNavigation.Brand,
+                                Model = report.VehicleClientIdVehicleClientNavigation.Model,
+                                Color = report.VehicleClientIdVehicleClientNavigation.Color,
+                                Plate = report.VehicleClientIdVehicleClientNavigation.Plate,
+                                Year = report.VehicleClientIdVehicleClientNavigation.Year,
+                                SerialNumber = report.VehicleClientIdVehicleClientNavigation.SerialNumber,
+                            };
                         }
-                        itemDTO.Images = images;
-                        var involveds = new List<InvolvedDTO>();
-                        foreach (var item in report.Involveds)
+
+                        if (report.DriverClientIdDriverClientNavigation != null)
                         {
-                            var involved = new InvolvedDTO();
-                            involved.LastNameInvolved = item.LastNameInvolved;
-                            involved.NameInvolved = item.NameInvolved;
-                            involved.LicenseNumber = item.LicenseNumber;
-                            involveds.Add(involved);
+                            itemDTO.DriverClient = new DriverclientDTO
+                            {
+                                IdDriverClient = report.DriverClientIdDriverClientNavigation.IdDriverClient,
+                                NameDriver = report.DriverClientIdDriverClientNavigation.NameDriver,
+                                LastNameDriver = report.DriverClientIdDriverClientNavigation.LastNameDriver,
+                                LicenseNumber = report.DriverClientIdDriverClientNavigation.LicenseNumber,
+                                TelephoneNumber = report.DriverClientIdDriverClientNavigation.TelephoneNumber
+                            };
                         }
-                        itemDTO.Involveds = involveds;
-                        if (report.OpinionAdjusterIdOpinionAdjuster != null)
+
+                        itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
+
+                        itemDTO.Involveds = report.Involveds?.Select(item => new InvolvedDTO
                         {
-                            var opinion = new OpinionadjusterDTO();
-                            opinion.CreationDate = (DateTime)report.OpinionAdjusterIdOpinionAdjusterNavigation.CreationDate;
-                            opinion.Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description;
-                            opinion.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster;
-                            itemDTO.OpinionAdjuster = opinion;
-                        }*/
-                        result = itemDTO;
+                            LastNameInvolved = item.LastNameInvolved,
+                            NameInvolved = item.NameInvolved,
+                            LicenseNumber = item.LicenseNumber
+                        }).ToList();
+
+                        if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
+                        {
+                            itemDTO.OpinionAdjuster = new OpinionadjusterDTO
+                            {
+                                CreationDate = (DateTime)report.OpinionAdjusterIdOpinionAdjusterNavigation.CreationDate,
+                                Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description,
+                                IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster
+                            };
+                        }
+
+                        return itemDTO;
                     }
 
                 }
@@ -205,7 +214,7 @@ namespace HDIApi.Bussines
                 {
                     PreviewReportDTO temp = new PreviewReportDTO()
                     {
-                        NameClient = item.DriverClientIdDriverClientNavigation.NameDriver + " " +item.DriverClientIdDriverClientNavigation.LastNameDriver,
+                        NameClient = item.DriverClientIdDriverClientNavigation.NameDriver + " " + item.DriverClientIdDriverClientNavigation.LastNameDriver,
                         ReportNumber = item.IdAccident,
                         StatusReport = item.ReportStatus,
                         ReportDate = item.AccidentDate.GetValueOrDefault(),
@@ -216,7 +225,8 @@ namespace HDIApi.Bussines
                     reportsList.Add(temp);
                 }
                 code = 200;
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 code = 500;
             }
@@ -237,8 +247,9 @@ namespace HDIApi.Bussines
                 else
                 {
                     var opinionAdjuster = await _context.Opinionadjusters.Where(i => i.IdOpinionAdjuster == opinion.IdOpinionAdjuster).FirstOrDefaultAsync();
-                    if(opinionAdjuster != null){
-                        if(opinionAdjuster.Description != opinion.Description)
+                    if (opinionAdjuster != null)
+                    {
+                        if (opinionAdjuster.Description != opinion.Description)
                             opinionAdjuster.Description = opinion.Description;
                         await _context.SaveChangesAsync();
                         result = true;
@@ -271,7 +282,8 @@ namespace HDIApi.Bussines
                     opinionAdjuster.IdOpinionAdjuster = Guid.NewGuid().ToString();
 
                     var accident = await _context.Accidents.Where(i => i.IdAccident == opinion.IdAccident).FirstOrDefaultAsync();
-                    if(accident != null && accident.OpinionAdjusterIdOpinionAdjuster == null){
+                    if (accident != null && accident.OpinionAdjusterIdOpinionAdjuster == null)
+                    {
                         accident.OpinionAdjusterIdOpinionAdjusterNavigation = opinionAdjuster;
                         _context.Opinionadjusters.Add(opinionAdjuster);
                         accident.ReportStatus = "Dictaminado";
