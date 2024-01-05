@@ -8,6 +8,7 @@ namespace HDIApi.DTOs
         public DateTime ReportDate {get;set;}
         public string Latitude {get;set;}
         public string Longitude {get;set;}
+        public string LocationName { get; set; }
 
     }
 }

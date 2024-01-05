@@ -27,7 +27,6 @@ namespace HDIApi.Utility
             {
                 InitializeConfiguration();
             }
-            
 
             var claims = new[]
             {

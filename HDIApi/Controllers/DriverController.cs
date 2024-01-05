@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using HDIApi.Providers;
 using HDIApi.DTOs;
 using HDIApi.Bussines.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class DriverController : ControllerBase
     {
      
@@ -18,8 +20,6 @@ namespace HDIApi.Controllers
         public DriverController( [FromBody] IDriverProvider _driverProvider)
         {
             driverProvider = _driverProvider;
-            
-
         }
 
         

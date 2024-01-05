@@ -9,6 +9,8 @@ namespace HDIApi.DTOs
         public string? NameDriver { get; set; }
 
         public string? LastNameDriver { get; set; }
+        public string? AgeString {get;set;}
+        public DateOnly Age {get;set;}
 
         public string FullNameDriver { get; set; } = null!;
 

@@ -29,6 +29,7 @@ namespace HDIApi.Providers
                     IdDriverClient = Utility.GenerateRandomID.GenerateID(),
                     NameDriver = newDriverClient.NameDriver,
                     LastNameDriver = newDriverClient.LastNameDriver,
+                    Age = newDriverClient.Age,
                     TelephoneNumber = newDriverClient.TelephoneNumber,
                     LicenseNumber = newDriverClient.LicenseNumber,
                     Password = newDriverClient.Password
