@@ -261,7 +261,7 @@ namespace HDIApi.Bussines
 
                 if (!canConnect)
                 {
-                    throw new Exception("No se pudo establecer conexión con la base de datos.");
+                    throw new Exception("No se pudo establecer conexión con la base de datos..");
                 }
                 else
                 {
