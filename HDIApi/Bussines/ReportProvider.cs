@@ -205,12 +205,13 @@ namespace HDIApi.Bussines
                 {
                     PreviewReportDTO temp = new PreviewReportDTO()
                     {
-                        NameClient = item.DriverClientIdDriverClientNavigation.NameDriver,
+                        NameClient = item.DriverClientIdDriverClientNavigation.NameDriver + " " +item.DriverClientIdDriverClientNavigation.LastNameDriver,
                         ReportNumber = item.IdAccident,
                         StatusReport = item.ReportStatus,
                         ReportDate = item.AccidentDate.GetValueOrDefault(),
                         Latitude = item.Latitude,
-                        Longitude = item.Longitude
+                        Longitude = item.Longitude,
+                        LocationName = item.Location
                     };
                     reportsList.Add(temp);
                 }
