@@ -142,7 +142,7 @@ namespace HDIApi.Bussines
                             IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster
                         };
 
-                        if (report.VehicleClientIdVehicleClientNavigation != null)
+                        /*if (report.VehicleClientIdVehicleClientNavigation != null)
                         {
                             itemDTO.VehicleClient = new VehicleclientDTO
                             {
@@ -154,9 +154,9 @@ namespace HDIApi.Bussines
                                 Year = report.VehicleClientIdVehicleClientNavigation.Year,
                                 SerialNumber = report.VehicleClientIdVehicleClientNavigation.SerialNumber,
                             };
-                        }
+                        }*/
 
-                        if (report.DriverClientIdDriverClientNavigation != null)
+                        /*if (report.DriverClientIdDriverClientNavigation != null)
                         {
                             itemDTO.DriverClient = new DriverclientDTO
                             {
@@ -166,18 +166,18 @@ namespace HDIApi.Bussines
                                 LicenseNumber = report.DriverClientIdDriverClientNavigation.LicenseNumber,
                                 TelephoneNumber = report.DriverClientIdDriverClientNavigation.TelephoneNumber
                             };
-                        }
+                        }*/
 
-                        itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
+                        /*itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
 
                         itemDTO.Involveds = report.Involveds?.Select(item => new InvolvedDTO
                         {
                             LastNameInvolved = item.LastNameInvolved,
                             NameInvolved = item.NameInvolved,
                             LicenseNumber = item.LicenseNumber
-                        }).ToList();
+                        }).ToList();*/
 
-                        if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
+                        /*if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
                         {
                             itemDTO.OpinionAdjuster = new OpinionadjusterDTO
                             {
@@ -185,7 +185,7 @@ namespace HDIApi.Bussines
                                 Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description,
                                 IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster
                             };
-                        }
+                        }*/
 
                         return itemDTO;
                     }
