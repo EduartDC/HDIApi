@@ -20,8 +20,6 @@ namespace HDIApi.Controllers
         public DriverController( [FromBody] IDriverProvider _driverProvider)
         {
             driverProvider = _driverProvider;
-            
-
         }
 
         
