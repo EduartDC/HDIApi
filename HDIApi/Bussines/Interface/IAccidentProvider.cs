@@ -4,6 +4,8 @@ namespace HDIApi.Bussines.Interface
 {
     public interface IAccidentProvider
     {
-        Task<IEnumerable<AccidentDTO>> GetAccidentsByClient(string idClientDriver);
+        Task<IEnumerable<AccidentDTO>> GetAccidents();
+        Task<IEnumerable<AccidentDTO>> GetAccidentsWithoutAdjuster();
+        Task<bool> AssignAdjusterToAccident(string accidentId, string employeeId);        
     }
 }
