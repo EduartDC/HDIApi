@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using HDIApi.Providers;
 using HDIApi.DTOs;
 using HDIApi.Bussines.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
 
@@ -22,7 +24,7 @@ namespace HDIApi.Controllers
 
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost("SetNewEmployee")]
         public async Task<IActionResult> SetNewEmployee([FromBody] EmployeeDTO newEmployee)
         {
@@ -30,6 +32,7 @@ namespace HDIApi.Controllers
             return StatusCode(code);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("GetEmployeeById/{idEmployee}")]
         public async Task<IActionResult> GetEmployeeById(string idEmployee)
         {
@@ -40,14 +43,16 @@ namespace HDIApi.Controllers
                 return StatusCode(code);
         }
 
-          [HttpPost("SetUpdateEmployee")]
+        [Authorize(Roles = "admin")]
+        [HttpPost("SetUpdateEmployee")]
         public async Task<IActionResult> SetUpdateEmployee([FromBody] EmployeeDTO employee)
         {
             int code = await employeeProvider.SetUpdateEmployee(employee);
             return StatusCode(code);
         }
 
-          [HttpGet("GetEmployeeList")]
+        [Authorize(Roles = "admin")]
+        [HttpGet("GetEmployeeList")]
         public async Task<IActionResult> GetEmployeeList()
         {
             (int code, List<EmployeeDTO> employeeList) = await employeeProvider.GetEmployeeList();
