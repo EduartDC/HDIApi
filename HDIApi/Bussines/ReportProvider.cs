@@ -156,7 +156,7 @@ namespace HDIApi.Bussines
                             };
                         }
 
-                        if (report.DriverClientIdDriverClientNavigation != null)
+                        /*if (report.DriverClientIdDriverClientNavigation != null)
                         {
                             itemDTO.DriverClient = new DriverclientDTO
                             {
@@ -166,7 +166,7 @@ namespace HDIApi.Bussines
                                 LicenseNumber = report.DriverClientIdDriverClientNavigation.LicenseNumber,
                                 TelephoneNumber = report.DriverClientIdDriverClientNavigation.TelephoneNumber
                             };
-                        }
+                        }*/
 
                         /*itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
 
