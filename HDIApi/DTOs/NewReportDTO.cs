@@ -6,20 +6,21 @@ namespace HDIApi.DTOs
     public class NewReportDTO
     {
         [Required]
-        public string? Location { get; set; }
+        public string Location { get; set; }
         [Required]
-        public string Latitude { get; set; } = null!;
+        public string Longitude { get; set; }
         [Required]
-        public string Longitude { get; set; } = null!;
+        public string Latitude { get; set; }
+        public string ReportStatus { get; set; }
         [Required]
-        public string NameLocation { get; set; } = null!;
+        public DateTime AccidentDate { get; set; }
         [Required]
-        public string IdVehicleClient { get; set; } = null!;
+        public string IdDriverClient { get; set; }
         [Required]
-        public string IdDriverClient { get; set; } = null!;
+        public string IdVehicleClient { get; set; }
         [Required]
-        public  List<ImageDTO> Images { get; } = new List<ImageDTO>();
+        public List<string> Images { get; set; }
         [Required]
-        public  List<InvolvedDTO> Involveds { get; } = new List<InvolvedDTO>();
+        public List<InvolvedDTO> Involveds { get; set; }
     }
 }

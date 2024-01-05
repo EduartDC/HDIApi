@@ -15,9 +15,9 @@ public partial class Involved
 
     public string AccidentIdAccident { get; set; } = null!;
 
-    public string CarInvolvedIdCarInvolved { get; set; } = null!;
+    public string? CarInvolvedIdCarInvolved { get; set; }
 
     public virtual Accident AccidentIdAccidentNavigation { get; set; } = null!;
 
-    public virtual Carinvolved? CarInvolvedIdCarInvolvedNavigation { get; set; } = null!;
+    public virtual Carinvolved? CarInvolvedIdCarInvolvedNavigation { get; set; }
 }

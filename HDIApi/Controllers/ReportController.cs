@@ -26,13 +26,13 @@ namespace HDIApi.Controllers
             try
             {
                 var respond = await _reportProvider.CreateReport(report);
-                if (respond == null)
+                if (respond)
                 {
-                    result = BadRequest();
+                    result = Ok();
                 }
                 else
                 {
-                    result = Ok();
+                    result = BadRequest();
                 }
             }
             catch (Exception ex)
@@ -65,6 +65,30 @@ namespace HDIApi.Controllers
             return result;
         }
 
+
+        [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
+        public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
+        {
+            int code = 0;
+            List<PreviewReportDTO> list = new List<PreviewReportDTO>();
+            try
+            {
+                (code, list) = await _reportProvider.GetPreviewReportsByEmployee(idEmployee);
+                if (code == 200)
+                {
+                    return Ok(list);
+                }
+                else
+                {
+                    return StatusCode(code);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+        }
         [HttpPost("PostOpinion")]
         public async Task<IActionResult> PostOpinion([FromBody] NewOpinionadjusterDTO opinion){
             IActionResult result;
@@ -107,6 +131,7 @@ namespace HDIApi.Controllers
                 result = StatusCode(500, ex.Message);
             }
             return result;
+
         }
     }
 }

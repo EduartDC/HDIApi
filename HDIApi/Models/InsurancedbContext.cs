@@ -204,7 +204,7 @@ public partial class InsurancedbContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("Accident_idAccident");
             entity.Property(e => e.ImageReport)
-                .HasColumnType("blob")
+                .HasMaxLength(2000)
                 .HasColumnName("imageReport");
 
             entity.HasOne(d => d.AccidentIdAccidentNavigation).WithMany(p => p.Images)
@@ -226,6 +226,12 @@ public partial class InsurancedbContext : DbContext
             entity.Property(e => e.IdInsurancePolicy)
                 .HasMaxLength(100)
                 .HasColumnName("idInsurancePolicy");
+            entity.Property(e => e.CoveragePeriod)
+                .HasMaxLength(45)
+                .HasColumnName("coveragePeriod");
+            entity.Property(e => e.CoverageType)
+                .HasMaxLength(45)
+                .HasColumnName("coverageType");
             entity.Property(e => e.DriverClientIdDriverClient)
                 .HasMaxLength(100)
                 .HasColumnName("DriverClient_idDriverClient");
@@ -291,7 +297,6 @@ public partial class InsurancedbContext : DbContext
 
             entity.HasOne(d => d.CarInvolvedIdCarInvolvedNavigation).WithMany(p => p.Involveds)
                 .HasForeignKey(d => d.CarInvolvedIdCarInvolved)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_Involved_CarInvolved1");
         });
 

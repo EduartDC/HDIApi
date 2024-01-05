@@ -53,7 +53,7 @@ namespace HDIApi.Controllers
                     {
                         token = "",
                         idUser = driverInfo.IdDriverClient,
-                        role = "cliente",
+                        role = "conductor",
                         fullName = driverInfo.NameDriver + " " + driverInfo.LastNameDriver
                     };
                     result = Ok(TokenGenerator.GetToken(token));
