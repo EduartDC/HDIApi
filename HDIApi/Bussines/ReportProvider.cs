@@ -177,7 +177,7 @@ namespace HDIApi.Bussines
                             LicenseNumber = item.LicenseNumber
                         }).ToList();*/
 
-                        if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
+                        /*if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
                         {
                             itemDTO.OpinionAdjuster = new OpinionadjusterDTO
                             {
@@ -185,7 +185,7 @@ namespace HDIApi.Bussines
                                 Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description,
                                 IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster
                             };
-                        }
+                        }*/
 
                         return itemDTO;
                     }
