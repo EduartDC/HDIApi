@@ -34,7 +34,7 @@ namespace HDIApi.Bussines
                             var newreport = new Accident();
                             newreport.IdAccident = Guid.NewGuid().ToString();
                             newreport.AccidentDate = DateTime.Now;
-                            newreport.ReportStatus = "Nuevo";
+                            newreport.ReportStatus = "Pendiente";
                             newreport.DriverClientIdDriverClient = report.IdDriverClient;
                             newreport.VehicleClientIdVehicleClient = report.IdVehicleClient;
                             newreport.Latitude = report.Latitude;
@@ -130,7 +130,7 @@ namespace HDIApi.Bussines
                         itemDTO.Longitude = report.Longitude;
                         itemDTO.Location = report.Location;
                         itemDTO.NameLocation = report.NameLocation;
-                        itemDTO.ReportStatus = "Pendiente";
+                        itemDTO.ReportStatus = report.ReportStatus;
                         itemDTO.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster;
 
                         var vehicle = new VehicleclientDTO();
