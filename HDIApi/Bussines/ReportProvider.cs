@@ -104,7 +104,7 @@ namespace HDIApi.Bussines
             {
                 bool canConnect = await _context.Database.CanConnectAsync();
 
-                if (canConnect)
+                if (!canConnect)
                 {
                     throw new Exception("No se pudo establecer conexión con la base de datos.");
                 }
