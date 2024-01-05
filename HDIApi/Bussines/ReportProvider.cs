@@ -142,7 +142,7 @@ namespace HDIApi.Bussines
                             IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjuster
                         };
 
-                        /*if (report.VehicleClientIdVehicleClientNavigation != null)
+                        if (report.VehicleClientIdVehicleClientNavigation != null)
                         {
                             itemDTO.VehicleClient = new VehicleclientDTO
                             {
@@ -154,7 +154,7 @@ namespace HDIApi.Bussines
                                 Year = report.VehicleClientIdVehicleClientNavigation.Year,
                                 SerialNumber = report.VehicleClientIdVehicleClientNavigation.SerialNumber,
                             };
-                        }*/
+                        }
 
                         /*if (report.DriverClientIdDriverClientNavigation != null)
                         {
