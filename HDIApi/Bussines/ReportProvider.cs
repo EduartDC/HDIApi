@@ -122,7 +122,7 @@ namespace HDIApi.Bussines
                     if (report != null)
                     {
                         var itemDTO = new ReportDTO();
-                        itemDTO.IdAccident = report.IdAccident;
+                        /*itemDTO.IdAccident = report.IdAccident;
                         itemDTO.AccidentDate = report.AccidentDate;
                         itemDTO.IdDriverClient = report.DriverClientIdDriverClient;
                         itemDTO.IdVehicleClient = report.VehicleClientIdVehicleClient;
@@ -177,7 +177,7 @@ namespace HDIApi.Bussines
                             opinion.Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description;
                             opinion.IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster;
                             itemDTO.OpinionAdjuster = opinion;
-                        }
+                        }*/
                         result = itemDTO;
                     }
 
