@@ -168,16 +168,16 @@ namespace HDIApi.Bussines
                             };
                         }*/
 
-                        /*itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
+                        itemDTO.Images = report.Images?.Select(item => new ImageDTO { ImageReport = item.ImageReport }).ToList();
 
                         itemDTO.Involveds = report.Involveds?.Select(item => new InvolvedDTO
                         {
                             LastNameInvolved = item.LastNameInvolved,
                             NameInvolved = item.NameInvolved,
                             LicenseNumber = item.LicenseNumber
-                        }).ToList();*/
+                        }).ToList();
 
-                        /*if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
+                        if (report.OpinionAdjusterIdOpinionAdjusterNavigation != null)
                         {
                             itemDTO.OpinionAdjuster = new OpinionadjusterDTO
                             {
@@ -185,7 +185,7 @@ namespace HDIApi.Bussines
                                 Description = report.OpinionAdjusterIdOpinionAdjusterNavigation.Description,
                                 IdOpinionAdjuster = report.OpinionAdjusterIdOpinionAdjusterNavigation.IdOpinionAdjuster
                             };
-                        }*/
+                        }
 
                         return itemDTO;
                     }
