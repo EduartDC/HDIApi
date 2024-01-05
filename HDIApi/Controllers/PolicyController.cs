@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HDIApi.Controllers
 {
-    
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
@@ -18,7 +17,7 @@ namespace HDIApi.Controllers
             _logger = logger;
             _policyProvider = policyProvider;
         }
-
+        [Authorize(Roles = "conductor")]
         [HttpGet("GetPolicyByDriver/{idDriver}")]
         public async Task<IActionResult> GetPolicyByDiver(string idDriver)
         {
