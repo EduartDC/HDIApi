@@ -17,7 +17,7 @@ namespace HDIApi.Controllers
             _logger = logger;
             _policyProvider = policyProvider;
         }
-        [Authorize(Roles = "ajustador")]
+        [Authorize(Roles = "conductor")]
         [HttpGet("GetPolicyByDriver/{idDriver}")]
         public async Task<IActionResult> GetPolicyByDiver(string idDriver)
         {
