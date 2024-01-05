@@ -66,6 +66,13 @@ namespace HDIApi.Controllers
         }
 
         [Authorize(Roles = "ajustador")]
+        [HttpGet("GetReportByIdtwo/{idReport}")]
+        public IActionResult GetReportByIdtow(string idReport)
+        {
+            return Ok();
+        }
+
+        [Authorize(Roles = "ajustador")]
         [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
         public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
         {
