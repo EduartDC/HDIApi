@@ -10,7 +10,7 @@ namespace HDIApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    
     public class DriverController : ControllerBase
     {
      
@@ -26,9 +26,8 @@ namespace HDIApi.Controllers
         [HttpPost("SetNewDriver")]
         public async Task<IActionResult> SetNewDriver([FromBody] DriverclientDTO newDriverClient)
         {
-           int code =  await driverProvider.SetNewDriver(newDriverClient);
-
-            return StatusCode(code);
+            int code =  await driverProvider.SetNewDriver(newDriverClient);
+            return StatusCode(200);
         }
 
         

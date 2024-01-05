@@ -21,6 +21,7 @@ namespace HDIApi.Providers
         public Task<int> SetNewDriver(DriverclientDTO newDriverClient)
         {
             int code = 0;
+            DateOnly.TryParse(newDriverClient.AgeString, out DateOnly fechaConvertida);
             var driverTemp = connectionModel.Driverclients.Where(a => a.LicenseNumber.Equals(newDriverClient.LicenseNumber)).FirstOrDefault();
             if (driverTemp == null)
             {
@@ -29,7 +30,7 @@ namespace HDIApi.Providers
                     IdDriverClient = Utility.GenerateRandomID.GenerateID(),
                     NameDriver = newDriverClient.NameDriver,
                     LastNameDriver = newDriverClient.LastNameDriver,
-                    Age = newDriverClient.Age,
+                    Age = fechaConvertida,
                     TelephoneNumber = newDriverClient.TelephoneNumber,
                     LicenseNumber = newDriverClient.LicenseNumber,
                     Password = newDriverClient.Password
