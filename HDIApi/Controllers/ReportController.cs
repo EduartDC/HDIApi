@@ -8,6 +8,7 @@ namespace HDIApi.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
+
     public class ReportController : ControllerBase
     {
         private readonly ILogger<ReportController> _logger;
@@ -41,6 +42,7 @@ namespace HDIApi.Controllers
             }
             return result;
         }
+
         [Authorize(Roles = "ajustador")]
         [HttpGet("GetReportById/{idReport}")]
         public async Task<IActionResult> GetReportById(string idReport)
@@ -60,12 +62,37 @@ namespace HDIApi.Controllers
             }
             catch (Exception ex)
             {
-                result = StatusCode(500, ex.Message);
+                result = StatusCode(500, new { error = ex.Message });
             }
             return result;
         }
 
         [Authorize(Roles = "ajustador")]
+        [HttpGet("GetReportByIdtwo/{idReport}")]
+        public async Task<IActionResult> GetReportByIdtow(string idReport)
+        {
+            IActionResult result;
+            try
+            {
+                var respond = await _reportProvider.GetReportById(idReport);
+                if (respond == null)
+                {
+                    result = NotFound();
+                }
+                else
+                {
+                    result = Ok(respond);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = StatusCode(500, new { error = ex.Message });
+            }
+            return result;
+        }
+
+        [Authorize(Roles = "ajustador")]
+
         [HttpGet("GetPreviewReportsByEmployee/{idEmployee}")]
         public async Task<IActionResult> GetPreviewReportsByEmployee(string idEmployee)
         {
