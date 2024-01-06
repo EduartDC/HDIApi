@@ -125,17 +125,15 @@ namespace HDIApi.Bussines
                 var employeeTemp = _context.Employees.Where(a => a.Username.Equals(updatedEmployee.Username)).FirstOrDefault();
                 if (employeeTemp != null)
                 {
-                    Console.WriteLine("Entrnado");
+                    
                     // se verifica que el username encontrado ya este asignado al mismo usuario
                     if (employeeTemp.IdEmployee.Equals(updatedEmployee.IdEmployee))
                     {
                         employeeTemp.NameEmployee = updatedEmployee.NameEmployee;
                         employeeTemp.LastnameEmployee = updatedEmployee.LastnameEmployee;
-                        if (!updatedEmployee.Password.IsNullOrEmpty())
-                            employeeTemp.Password = updatedEmployee.Password;
+                        employeeTemp.Password = updatedEmployee.Password;
                         employeeTemp.Rol = updatedEmployee.Rol;
                         changes = _context.SaveChanges();
-                        if (changes == 1)
                             code = 200;
                     }
                     else
@@ -152,12 +150,10 @@ namespace HDIApi.Bussines
                         employeeTemp.NameEmployee = updatedEmployee.NameEmployee;
                         employeeTemp.LastnameEmployee = updatedEmployee.LastnameEmployee;
                         employeeTemp.Username = updatedEmployee.Username;
-                        if (!updatedEmployee.Password.IsNullOrEmpty())
-                            employeeTemp.Password = updatedEmployee.Password;
+                        employeeTemp.Password = updatedEmployee.Password;
                         employeeTemp.Rol = updatedEmployee.Rol;
                         changes = _context.SaveChanges();
-                        if (changes == 1)
-                            code = 200;
+                        code = 200;
                     }
                 }
             }
